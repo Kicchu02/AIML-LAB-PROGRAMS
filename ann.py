@@ -5,7 +5,7 @@ X = np.array(([2,9],[1,5],[3,6]), dtype=float)
 Y = np.array(([92],[86],[89]), dtype=float)
 
 # squish the dataset values to between 0 and 1
-X /= np.amax(X, axis=0)
+X /= 10
 Y /= 100
 
 def sigmoid(x):
