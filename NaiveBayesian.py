@@ -7,14 +7,10 @@ from sklearn.naive_bayes import GaussianNB
 
 # Load Data from CSV
 data = pd.read_csv('tennisdata.csv')
-print("The first 5 Values of data is :\n", data.head())
 
 # obtain train data and train output
 X = data.iloc[:, :-1]
-print("\nThe First 5 values of the train data is\n", X.head())
-
 y = data.iloc[:, -1]
-print("\nThe First 5 values of train output is\n", y.head())
 
 # convert them in numbers
 le_outlook = LabelEncoder()
@@ -28,9 +24,6 @@ X.loc[:, 'Humidity'] = le_Humidity.fit_transform(X['Humidity'])
 
 le_Windy = LabelEncoder()
 X.loc[:, 'Windy'] = le_Windy.fit_transform(X['Windy'])
-
-
-print("\nNow the Train output is\n", X.head())
 
 le_PlayTennis = LabelEncoder()
 y = le_PlayTennis.fit_transform(y)
