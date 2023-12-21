@@ -34,4 +34,6 @@ X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.20)
 classifier = GaussianNB()
 classifier.fit(X_train, y_train)
 
-print("Accuracy is:", accuracy_score(classifier.predict(X_test), y_test))
+y_pred = classifier.predict(X_test)
+
+print("Accuracy is:", accuracy_score(y_pred, y_test))
