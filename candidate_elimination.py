@@ -1,6 +1,6 @@
 import csv
 
-with open("trainingexamples.csv") as f:
+with open("tennisdata.csv") as f:
     csv_file = csv.reader(f)
     data = list(csv_file)
 
@@ -27,9 +27,12 @@ with open("trainingexamples.csv") as f:
 
     gh = [] # gh = general Hypothesis
     for i in general:
+        consider = False
         for j in i:
             if j != '?':
-                gh.append(i)
-                break
+                consider = True
+        if consider:
+            gh.append(i)
+            
     print("\nFinal Specific hypothesis:\n", specific)
     print("\nFinal General hypothesis:\n", gh)
