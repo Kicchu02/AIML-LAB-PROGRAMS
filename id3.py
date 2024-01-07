@@ -14,10 +14,10 @@ X = tennis_data.drop('PlayTennis_Yes', axis=1)
 y = tennis_data['PlayTennis_Yes']
 
 # Split the dataset into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 # Create and train the Decision Tree model
-dt_model = DecisionTreeClassifier(criterion='entropy', random_state=42)
+dt_model = DecisionTreeClassifier(criterion='entropy')
 dt_model.fit(X_train, y_train)
 
 # Make predictions on the test set
@@ -31,8 +31,3 @@ print(f"Accuracy: {accuracy:.2f}")
 tree_rules = export_text(dt_model, feature_names=X.columns.tolist())
 print("\nDecision Tree Rules:")
 print(tree_rules)
-
-# Classify a new sample
-new_sample = pd.DataFrame({'Outlook_Sunny': [1], 'Temperature_Mild': [1], 'Humidity_Normal': [1], 'Windy_Weak': [1]})
-predicted_class = dt_model.predict(new_sample)
-print("\nPredicted Class for New Sample:", "Yes" if predicted_class[0] == 1 else "No")
