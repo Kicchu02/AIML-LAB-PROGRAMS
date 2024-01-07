@@ -4,7 +4,7 @@ from sklearn.mixture import GaussianMixture
 import matplotlib.pyplot as plt
 
 # read the dataset
-dataset = pd.read_csv('iris.csv',header=None ,names=['slength','swidth','plength','pwidth','species'])
+dataset = pd.read_csv('iris.csv', names=['slength','swidth','plength','pwidth','species'])
 
 # prepare the data
 X = dataset.iloc[:,:-1].values
