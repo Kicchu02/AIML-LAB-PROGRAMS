@@ -5,7 +5,7 @@ with open("tennisdata.csv") as f:
     data = list(csv_file)
 
     specific = data[1][:-1]
-    general = [['?'] * len(specific)] * len(specific)
+    general = [['?' for i in range(len(specific))] for j in range(len(specific))]
 
     for i in data:
         if i[-1] == "Yes":
@@ -14,7 +14,7 @@ with open("tennisdata.csv") as f:
                     specific[j] = "?"
                     general[j][j] = "?"
 
-        elif i[-1] == "No":
+        else:
             for j in range(len(specific)):
                 if i[j] != specific[j]:
                     general[j][j] = specific[j]
@@ -22,17 +22,15 @@ with open("tennisdata.csv") as f:
                     general[j][j] = "?"
 
         print("\nStep " + str(data.index(i)+1) + " of Candidate Elimination Algorithm")
-        print(specific)
-        print(general)
+        print('specific:', specific)
+        print('general:', general)
 
     gh = [] # gh = general Hypothesis
     for i in general:
-        consider = False
         for j in i:
             if j != '?':
-                consider = True
-        if consider:
-            gh.append(i)
+                gh.append(i)
+                break
             
     print("\nFinal Specific hypothesis:\n", specific)
     print("\nFinal General hypothesis:\n", gh)
