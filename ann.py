@@ -27,16 +27,16 @@ bout = np.random.uniform(size=(1, output_nodes))
 # start algorithm
 for i in range(number_of_iterations):
   # forward propogation
-  hout = sigmoid(np.dot(X, wh) + bh)
-  out = sigmoid(np.dot(hout, wout) + bout)
+  hout = sigmoid(X @ wh + bh)
+  out = sigmoid(hout @ wout + bout)
 
   # backpropogation
   d_out = out * (1 - out) * (Y - out)
-  d_hidden = hout * (1 - hout) * np.dot(d_out, wout.T)
+  d_hidden = hout * (1 - hout) * (d_out @ wout.T)
 
   # modify the weights
-  wout += learning_rate * np.dot(hout.T, d_out)
-  wh += learning_rate * np.dot(X.T, d_hidden)
+  wout += learning_rate * hout.T @ d_out
+  wh += learning_rate * X.T @ d_hidden
 
 print('input:\n' + str(X))
 print('target:\n' + str(Y))
