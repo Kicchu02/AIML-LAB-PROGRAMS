@@ -13,28 +13,22 @@ X = data.iloc[:, :-1]
 y = data.iloc[:, -1]
 
 # convert them in numbers
-le_outlook = LabelEncoder()
-X.loc[:, 'Outlook'] = le_outlook.fit_transform(X['Outlook'])
+label_encoder = LabelEncoder()
+for col in X.columns.tolist():
+  X.loc[:,col] = label_encoder.fit_transform(X[col])
+y = label_encoder.fit_transform(y)
 
-le_Temperature = LabelEncoder()
-X.loc[:, 'Temperature'] = le_Temperature.fit_transform(X['Temperature'])
-
-le_Humidity = LabelEncoder()
-X.loc[:, 'Humidity'] = le_Humidity.fit_transform(X['Humidity'])
-
-le_Windy = LabelEncoder()
-X.loc[:, 'Windy'] = le_Windy.fit_transform(X['Windy'])
-
-le_PlayTennis = LabelEncoder()
-y = le_PlayTennis.fit_transform(y)
-
+# split the data into test and train
 X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.10)
 
+# train the Naive Bayesian classifier
 classifier = GaussianNB()
 classifier.fit(X_train, y_train)
 
+# make predictions
 y_pred = classifier.predict(X_test)
 
+# print the results
 print('Test data:', y_test)
 print('Predicted data:', y_pred)
 print("Accuracy is:", metrics.accuracy_score(y_pred, y_test))

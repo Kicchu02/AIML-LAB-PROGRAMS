@@ -26,7 +26,7 @@ em_labels = em.fit_predict(X)
 
 # plot the original
 plt.subplot(1,3,1)
-plt.scatter(X[:, 2], X[:,3], c=dataset['species'].map(colormap))
+plt.scatter(X[:,2], X[:,3], c=dataset['species'].map(colormap))
 plt.title('Original')
 
 # plot the kmeans

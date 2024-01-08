@@ -1,33 +1,51 @@
 import pandas as pd
-from sklearn.tree import DecisionTreeClassifier, export_text
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from pprint import pprint
+from collections import Counter
+from sklearn.preprocessing import LabelEncoder
+from sklearn.feature_selection import mutual_info_classif
 
-# Load the tennis dataset
-tennis_data = pd.read_csv('tennisdata.csv')
+def id3(data, target_attribute, attribute_names, default_class=None):
+  # if the target contains only yes or only no, return corresponding yes or no
+  count = Counter(data[target_attribute])
+  if len(count) == 1:
+    return next(iter(count))
+  # else if the data is empty or no attribute names are present, return the parent class
+  elif data.empty or not attribute_names:
+    return default_class
+  
+  # split the data into input and output columns
+  X = data[attribute_names]
+  Y = data[target_attribute]
+  
+  # calculate gains using the inbuilt function
+  gains = mutual_info_classif(X, Y, discrete_features=True)
 
-# Convert categorical variables to numerical values
-tennis_data = pd.get_dummies(tennis_data, columns=['Outlook', 'Temperature', 'Humidity', 'Windy', 'PlayTennis'], drop_first=True)
+  # take the attribute with max gain as the best attribute
+  best_attribute = attribute_names[gains.argmax()]
 
-# Split the dataset into features (X) and target variable (y)
-X = tennis_data.drop('PlayTennis_Yes', axis=1)
-y = tennis_data['PlayTennis_Yes']
+  # construct tree with best attribute as root node
+  tree = {best_attribute: {}}
 
-# Split the dataset into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+  # reduce the attribute names and recursively call the id3 to construct the subtree
+  remaining_attribute_names = [i for i in attribute_names if i != best_attribute]
+  tree[best_attribute] = {
+    val : id3(data_subset, target_attribute, remaining_attribute_names, default_class) for val, data_subset in data.groupby(best_attribute)
+  }
 
-# Create and train the Decision Tree model
-dt_model = DecisionTreeClassifier(criterion='entropy')
-dt_model.fit(X_train, y_train)
+  return tree
 
-# Make predictions on the test set
-y_pred = dt_model.predict(X_test)
+# read the dataset
+data = pd.read_csv('tennisdata.csv')
 
-# Calculate accuracy
-accuracy = accuracy_score(y_test, y_pred)
-print(f"Accuracy: {accuracy:.2f}")
+# get the attribute names as list and remove the target column
+attribute_names = data.columns.tolist()
+attribute_names.remove(attribute_names[-1])
 
-# Display the Decision Tree
-tree_rules = export_text(dt_model, feature_names=X.columns.tolist())
-print("\nDecision Tree Rules:")
-print(tree_rules)
+# convert string data to numerical values
+label_encoder = LabelEncoder()
+for attr in attribute_names:
+  data[attr] = label_encoder.fit_transform(data[attr])
+
+# get the tree from id3 algorithm and print it
+tree = id3(data, 'PlayTennis', attribute_names)
+pprint(tree)
