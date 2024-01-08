@@ -27,13 +27,14 @@ X.loc[:, 'Windy'] = le_Windy.fit_transform(X['Windy'])
 
 le_PlayTennis = LabelEncoder()
 y = le_PlayTennis.fit_transform(y)
-print("\nNow the Train output is\n",y)
 
-X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.20)
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size = 0.10)
 
 classifier = GaussianNB()
 classifier.fit(X_train, y_train)
 
 y_pred = classifier.predict(X_test)
 
+print('Test data:', y_test)
+print('Predicted data:', y_pred)
 print("Accuracy is:", metrics.accuracy_score(y_pred, y_test))
