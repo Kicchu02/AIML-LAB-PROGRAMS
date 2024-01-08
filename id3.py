@@ -23,13 +23,13 @@ def id3(data, target_attribute, attribute_names, default_class=None):
   # take the attribute with max gain as the best attribute
   best_attribute = attribute_names[gains.argmax()]
 
-  # construct tree with best attribute as root node
-  tree = {best_attribute: {}}
-
   # reduce the attribute names and recursively call the id3 to construct the subtree
   remaining_attribute_names = [i for i in attribute_names if i != best_attribute]
-  tree[best_attribute] = {
+
+  # construct tree with best attribute as root node and value is recursively called
+  tree = {best_attribute: {
     val : id3(data_subset, target_attribute, remaining_attribute_names, default_class) for val, data_subset in data.groupby(best_attribute)
+    }
   }
 
   return tree
