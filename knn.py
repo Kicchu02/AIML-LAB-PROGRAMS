@@ -20,6 +20,9 @@ classifier.fit(Xtrain, ytrain)
 # Make predictions
 ypred = classifier.predict(Xtest)
 
+print('test data:\n', ytest)
+print('predicted data:\n', ypred)
+
 # Evaluate and print results
 print('\n-------------------------------------')
 print(f"Accuracy of the classifier is {metrics.accuracy_score(ytest, ypred)}")
